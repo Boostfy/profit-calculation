@@ -112,9 +112,6 @@ this.gasPrice).toString(), 'ether');
             document.querySelector('body').scrollTo(0, 0);
             this.fetchData(false);
         },
-        fetchDeriskAmount(slug, index){
-
-        },
         fetchCollection(slug, index){
             this.$axios.$get('/common/collections/' + slug)
             .then(async(response) => {
