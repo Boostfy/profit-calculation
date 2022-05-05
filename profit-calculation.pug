@@ -1,0 +1,162 @@
+client-only
+    
+.dashboard-content.clearfix.layout-row.layout-align-start-start.profit-estimator-wrapper
+        .profit-estimator-container
+            .left-pane
+                h2.title Profit Calculation by Coniun.io
+                .layout-row.layout-align-center-center.mr-top-20
+                    form.w-f(
+                        action="#",
+                        method="POST",
+                        @submit.prevent="fetchData()"
+                    )
+                        .flex.w-f
+                            Field.w-f(
+                                v-model='txHash'
+                            )
+                            .button.mr-left-10
+                                Button.txn-submit-btn(
+                                    
+:loading="$wait.is('calculating_derisk_amount')",
+                                    
+:disabled="$wait.is('calculating_derisk_amount')"
+                                ) Submit
+
+                transition(name="fade")
+                    
+.profit-card(v-if="!$wait.is('calculating_derisk_amount')")
+                        .no-txhash-message(v-if='!collection') Enter a 
+transaction hash/id above to view the transaction details and derisk 
+amount.
+                        .no-provided-message(v-if='collection && value === 
+0') We currently do not provide Profit Calculation for transactions which 
+are not in ETH, or free mints in ETH.
+                        .transaction-widget(v-if='collection && value > 
+0')
+                            h1.title Transaction details:
+
+                            .data-group
+                                .profit-label Value
+                                .profit-value {{ transactionValue }} Ξ
+
+                            .data-group.mr-top-20
+                                .profit-label Transaction fee
+                                .profit-value {{ 
+transactionFee.substring(0, 6) }} Ξ
+
+                            .data-group.mr-top-20(v-if='devFee')
+                                .profit-label {{ collection.name }} 
+Royalty
+                                .profit-value {{ royaltyFee }}
+
+                            .data-group.mr-top-20(v-if='sellerFee')
+                                .profit-label Platform fee
+                                .profit-value {{ platformFee }}
+                        .derisk-widget(v-if='collection && value > 0')
+                            h1.title Break/Even point:
+                            .derisk-value {{ deriskAmount }} Ξ
+                            .derisk-info-txt List for this amount to 
+recoup purchase cost including fees
+
+                            .mr-top-20.flex
+                                Field(
+                                    label='If you sold for',
+                                    v-model='soldValue'
+                                )
+                
+                            .data-group.mr-top-20
+                                .profit-label your total profit would be
+                                .profit-value {{ profitValue }} Ξ
+
+                transition(name="fade")
+                    
+.profit-estimator-loading(v-if="$wait.is('calculating_derisk_amount')") 
+                        .loading-container
+                            .spinner
+
+                hr.mr-top-40.mr-bottom-40(v-if="collection && stats && 
+value > 0 && !$wait.is('calculating_derisk_amount')")
+                
+                transition(name="fade")
+                    
+.collection-card(v-if="!$wait.is('calculating_derisk_amount')")
+                        .card-header(v-if="collection && stats && value > 
+0")
+                            a.collection-info(
+                                
+:href="'https://opensea.com/collection/'+collection.collection.slug",
+                                target="_blank"
+                            )
+                                .collection-img
+                                    img(:src="collection.image_url", 
+:alt="collection.name")
+                                .collection-name {{ collection.name }}
+                            
+                            Button.refresh-btn(
+                                type="button",
+                                
+:disabled="$wait.is('loading_opensea_stats')",
+                                
+@click.prevent="loadCollectionStats(collection.collection.slug)"
+                            )
+                                i.fas.fa-redo(
+                                    
+:class="{'fa-spin':$wait.is('loading_opensea_stats')}"
+                                )
+                        
+                        .card-grid(v-if="collection && stats && value > 
+0")
+                            .collection-data
+                                .data-label Item Count
+                                .data-value {{ stats.num_owners }}
+                            .collection-data
+                                .data-label Floor
+                                .data-value {{ stats.floor_price }} Ξ
+                            .collection-data
+                                .data-label Volume Traded
+                                .data-value {{ 
+Math.floor(stats.total_volume) }} Ξ
+
+            .seperator(v-if="transactions.length")
+                .line
+
+            
+hr.mr-top-40.mr-bottom-40.w-f.show-below-960(v-if="transactions.length")
+
+            .latest-purchase-container(v-if='transactions.length')
+                h2.title.hide-below-960 Recent 10 Purchases
+                h2.title.show-below-960 Your Recent Purchases
+                .purchase-card(
+                    v-for='transaction in transactions',
+                    @click.prevent="setTransaction(transaction.hash)"
+                )
+
+                    .purchase-asset
+                        .asset-img
+                            img(v-if='transaction.collection', 
+:src="transaction.collection.image_url" 
+:alt="transaction.collection.name")
+                        a.asset
+                            .asset-title(v-if='transaction.collection') {{ 
+transaction.collection.name }}
+                            .asset-name {{ 
+transaction.collection_token_name || '' }}
+
+                    .purchase-data
+                        .data-label Bought for
+                        .data-value {{ transaction.sale_price.toFixed(4) 
+}} Ξ
+
+                    .purchase-data
+                        .data-label Break-Even Point
+                        .data-value {{ transaction.derisk_amount }} Ξ
+
+                    .purchase-date(
+                        v-tooltip.bottom='{ content: 
+transaction.transaction_at.format("MMM D, YYYY hh:mm A"), classes: 
+["fixed"] }'
+                    )
+                        .data-label.show-below-960 Break-Even Point
+                        .data-value.show-below-960 {{ 
+transaction.derisk_amount }} Ξ
+                        | {{ transaction.transaction_at.fromNow() }}

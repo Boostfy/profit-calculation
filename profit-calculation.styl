@@ -1,0 +1,249 @@
+.profit-estimator-wrapper
+    display flex
+    justify-content center
+    width 100%
+
+    .profit-estimator-container
+        //min-width 640px
+        width 100%
+        display flex
+        justify-content space-between
+        padding calc(0px + var(--top-bar-height)) 32px 32px 32px
+
+        @media(max-width 959px)
+            flex-flow column
+            min-width auto
+
+        .derisk-widget, .transaction-widget
+            width 50%
+        .no-txhash-message
+            font-size 14px
+            line-height 12px
+            color var(--neutrals-300)
+
+        .no-provided-message
+            font-size 14px
+            line-height 16px
+            color var(--neutrals-300)
+        
+        .txn-submit-btn
+            border-radius 10px
+            font-weight 500
+            &:focus, &:active
+                background-color var(--neutrals-100)
+        
+        .profit-estimator-loading
+            position relative
+            min-height 100px
+        
+        .left-pane
+            width 100%
+            padding 0px 40px
+            @media(max-width 959px)
+                padding 0px
+        .latest-purchase-container
+            width 100%
+            padding 0px 40px
+            @media(max-width 959px)
+                padding 0px
+
+        .seperator 
+            display flex
+            justify-content center
+            align-items center
+            min-height 100vh
+            padding 66px 0px
+            @media(max-width 959px)
+                display none
+
+            .line
+                height 100%
+                width 0.5px
+                opacity 0.8
+                background-color var(--neutrals-500)
+
+    .profit-card
+        display flex
+        margin-top 40px
+
+        .title
+            font-size 18px
+            line-height 21px
+        
+        .data-group
+            .profit-label
+                font-size 14px
+                line-height 12px
+                color var(--neutrals-300)
+
+            .profit-value
+                font-size 21px
+                line-height 23px
+                font-weight 500
+                margin-top 5px
+
+        /* Derisk Widget */
+        .derisk-value
+            font-size 32px
+            line-height 36px
+            font-weight 500
+            margin-top 5px
+            
+        .derisk-info-txt
+            margin-top 5px
+            color var(--neutrals-300)
+            font-size 12px
+    .collection-card
+        .card-header
+            display flex
+            justify-content space-between
+            align-items center
+
+            .collection-info
+                display flex
+                justify-content flex-start
+                text-decoration none
+                .collection-img
+                    display flex
+                    justify-content center
+                    align-items center
+                    width 40px
+                    height 40px
+                    overflow hidden
+                    border-radius 100%
+                    img
+                        width 40px
+                        height 40px
+                .collection-name
+                    display flex
+                    justify-content center
+                    align-items center
+                    margin-left 10px
+                    font-size 16px
+                    font-weight 600
+            
+            .refresh-btn
+                border-radius 10px
+                color var(--neutrals-100)
+                color var(--neutrals-600)
+
+        .card-grid
+            display grid
+            grid-template-columns repeat(3, 1fr)
+            margin-top 20px
+
+            .collection-data
+                text-align center
+                .data-label
+                    font-size 14px
+                    line-height 12px
+                    color var(--neutrals-300)
+
+                .data-value
+                    position relative
+                    font-size 21px
+                    line-height 23px
+                    font-weight 500
+                    margin-top 5px
+
+    /* Latest Purchase Container */
+    .latest-purchase-container
+        .purchase-card
+            display flex
+            justify-content space-between
+            align-items center
+            font-size 14px
+            line-height 16px
+            font-weight 500
+            padding 20px 10px
+            transition all .25s ease
+            @media(max-width 959px)
+                padding 10px 0px
+
+            &:hover
+                background-color var(--neutrals-700)
+                box-shadow var(--neutrals-600) 0px 0px 12px 0px
+                border-radius 10px
+                cursor pointer
+                @media(max-width 959px)
+                    background-color transparent
+                    box-shadow none
+
+            .purchase-date
+                //font-size 12px
+                //line-height 10px
+                //color var(--neutrals-300)
+                //font-weight 400
+                color var(--neutrals-300)
+
+                @media(max-width 959px)
+                    text-align right
+                    font-size 12px
+                    .data-label, .data-value
+                        font-size 12px
+
+                    .data-value
+                        color var(--neutrals-100)
+
+            .purchase-asset
+                display flex
+                justify-content flex-start
+                align-items center
+
+                .asset-img
+                    width 45px
+                    height 45px
+                    img
+                        width 45px
+                        height 45px
+                .asset
+                    margin-left 5px
+                    width 130px
+
+                    .asset-title
+                        overflow hidden
+                        text-overflow ellipsis
+                        white-space nowrap
+                        font-size 12px
+                        line-height 10px
+                        color var(--neutrals-300)
+                        font-weight 400
+                    .asset-name
+                        margin-top 5px
+                        overflow hidden
+                        text-overflow ellipsis
+                        white-space nowrap
+
+            .purchase-data
+                @media(max-width 959px)
+                    display none
+
+                .data-label
+                    font-size 12px
+                    line-height 10px
+                    color var(--neutrals-300)
+                    font-weight 400
+
+                .data-value
+                    position relative
+                    font-weight 500
+                    margin-top 5px
+            
+    
+    hr
+        border 0.5px solid var(--neutrals-500)
+        opacity 0.8
+    /* Input Style */
+    .dir-input
+        label
+            font-size 14px
+            line-height 12px
+            color var(--neutrals-300)
+        input
+            border 1px solid var(--neutrals-500)
+            background-color var(--neutrals-700)
+            color var(--neutrals-200)
+            &:focus
+                border 1px solid var(--neutrals-300)
+                background-color var(--neutrals-700)
+
